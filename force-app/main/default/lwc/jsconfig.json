@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "paths": {
+            "c/botWTracking": [
+                "botWTracking/botWTracking.js"
+            ],
+            "c/helloWorld": [
+                "helloWorld/helloWorld.js"
+            ],
+            "c/shrineCompTab": [
+                "shrineCompTab/shrineCompTab.js"
+            ],
+            "c/testWebComp": [
+                "testWebComp/testWebComp.js"
+            ],
+            "c/shrineComp": [
+                "shrineComp/shrineComp.js"
+            ]
+        }
+    },
+    "include": [
+        "**/*",
+        "../../../../.sfdx/typings/lwc/**/*.d.ts"
+    ],
+    "typeAcquisition": {
+        "include": [
+            "jest"
+        ]
+    }
+}

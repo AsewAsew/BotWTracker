@@ -1,0 +1,24 @@
+<aura:component controller="BotWTrackerHelper">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:attribute name="shrine" type="Shrine__c"/>
+    <aura:attribute name="disReg" type="Boolean"/>
+    <aura:attribute name="disCom" type="Boolean"/>
+
+    <div class="slds-grid slds-grid_align-spread">
+        <div class="slds-m-around_small slds-col_bump-right slds-size_1-of-6">
+            <p>{!v.shrine.Challenge_Name__c}</p>
+            <p>{!v.shrine.Completed__c}</p>
+            <aura:if isTrue="{!v.shrine.Quest__r.Name}">
+                <p>{!v.shrine.Quest__r.Name}</p>
+            </aura:if>
+        </div>
+        <div class="slds-col slds-size_1-of-6">
+            <lightning:button name="register" label="Register" disabled="{!v.disReg || v.disCom}"
+                    onclick="{!c.regShrine}" class="slds-m-around_small"/>
+            <lightning:button name="complete" label="Complete" disabled="{!v.disCom}"
+                    onclick="{!c.comShrine}" class="slds-m-around_small"/>
+        </div>
+    </div>
+
+</aura:component>

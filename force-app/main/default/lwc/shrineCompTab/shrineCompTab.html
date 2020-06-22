@@ -1,0 +1,21 @@
+<template>
+    <!--<template if:true={regions.data}>
+        <select class="slds-select" name="regionSelect" onchange={changeHandler}>
+            <option value=''>All</option>
+            <template for:each={regions.data} for:item='r'>
+                <option value={r.Id} key={r.Id}>{r.Name}</option>
+            </template>
+        </select>
+    </template>
+    <template if:false={regions.data}>
+        <p>No Regions Found!</p>
+    </template>-->
+    <template if:true={shrines}>
+        <template for:each={shrines.data} for:item='s'>
+            <p key={s.Id}>{s.Name}</p>
+        </template>
+    </template>
+    <template if:false={shrines}>
+        <p>No Shrines Found!</p>
+    </template>
+</template>

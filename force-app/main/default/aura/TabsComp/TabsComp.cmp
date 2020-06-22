@@ -1,0 +1,11 @@
+<aura:component implements="flexipage:AvailableForAllPageTypes">
+    <lightning:card title="Tracker">
+        <div class="slds-m-around_medium">
+            <lightning:tabset>
+                <lightning:tab label="Shrines" id="shrine">
+                    <c:ShrineTabComp/>
+                </lightning:tab>
+            </lightning:tabset>
+        </div>
+    </lightning:card>
+</aura:component>
