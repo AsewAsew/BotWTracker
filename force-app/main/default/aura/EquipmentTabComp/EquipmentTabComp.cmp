@@ -1,0 +1,19 @@
+<aura:component>
+    <lightning:tabset>
+        <lightning:tab label="Armors" id="armor">
+            <c:AuraArmorsComp/>
+        </lightning:tab>
+        <lightning:tab label="Arrows" id="arrow">
+            <c:AuraArrowsComp/>
+        </lightning:tab>
+        <lightning:tab label="Bows" id="bow">
+            <c:AuraBowsComp/>
+        </lightning:tab>
+        <lightning:tab label="Shields" id="shield">
+            <c:AuraShieldsComp/>
+        </lightning:tab>
+        <lightning:tab label="Weapons" id="weapon">
+            <c:AuraWeaponsComp/>
+        </lightning:tab>
+    </lightning:tabset>
+</aura:component>
