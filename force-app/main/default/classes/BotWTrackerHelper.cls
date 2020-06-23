@@ -78,4 +78,34 @@ public class BotWTrackerHelper {
         update sr;
         return sr;
     }
+
+    @AuraEnabled(Cacheable=true)
+    public static List<String> getArmArch()
+    {
+        return new List<String>{'None', 'Ancient Soldier Gear', 'Barbarian Set', 'Climbing Set', 'Dark Series', 'Desert Voe Set',
+                                'Fireproof Armor', 'Gerudo Set', 'Hero of the Wild Set', 'Hylian Set', 'Radiant Set', 'Rubber Set',
+                                'Salvager Set', 'Snowquill Set', 'Soldier\'s Gear', 'Stealth Set', 'Well-Worn Outfit', 'Zora Set'};
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static List<Item__c> getArmors(Integer page, Integer perPage, String archetype)
+    {
+        integer pageOffset = (page - 1) * perPage;
+        String query = 'SELECT Id, Name, Effect__c, Archetype__c, Total_Power__c, Set_Bonus__c FROM Item__c WHERE RecordType.Name = \'Armor\'';
+        if(archetype != '')
+            query += ' AND Archetype__c =: archetype';
+        query += ' LIMIT :perPage OFFSET :pageOffset';
+
+        return Database.query(query);
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static Integer getArmorsCount(String archetype)
+    {
+        String query = 'SELECT COUNT() FROM Item__c WHERE RecordType.Name = \'Armor\'';
+        if(archetype != '')
+            query += ' AND Archetype__c =: archetype';
+
+        return Database.countQuery(query);
+    }
 }

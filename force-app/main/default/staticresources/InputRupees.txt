@@ -1,0 +1,6 @@
+"Green Rupee" "1"
+"Blue Rupee" "5"
+"Red Rupee" "20"
+"Purple Rupee" "50"
+"Silver Rupee" "100"
+"Gold Rupee" "300"

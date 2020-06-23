@@ -2,6 +2,7 @@ public with sharing class ResetDatabase {
     
     public static void ResetAll()
     {
+        delete [SELECT Id FROM Upgrade__c];
         delete [SELECT Id FROM Region__c];
         delete [SELECT Id FROM Item__c];
 

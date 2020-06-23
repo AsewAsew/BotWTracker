@@ -1,3 +1,34 @@
-<aura:component>
-    <p>armors</p>
+<aura:component controller="BotWTrackerHelper">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:attribute name="armors" type="List" default="[]"/>
+    <aura:attribute name="armorsCount" type="Integer"/>
+    <aura:attribute name="page" type="Integer" default="1"/>
+    <aura:attribute name="perPage" type="Integer" default="15"/>
+    <aura:attribute name="archetypes" type="List" default="[]"/>
+    <aura:attribute name="selArch" type="String" default=""/>
+    <aura:attribute name="disPrev" type="Boolean" default="true"/>
+    <aura:attribute name="disNext" type="Boolean" default="false"/>
+
+    <div class="slds-grid slds-grid_align-spread">
+        <lightning:button name="btnPrev" label="PREV" onclick="{!c.prevPage}" disabled="{!v.disPrev}" class="slds-m-around_small slds-col slds-size_1-of-6"/>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <p>Set</p>
+            <select label="Set Select" id="archSelect" onchange="{!c.selectArchetype}">
+                <option text="All" value=""/>
+                <aura:iteration items="{!v.archetypes}" var="a">
+                    <option text="{!a}" value="{!a}"/>
+                </aura:iteration>
+            </select>
+        </div>
+        <lightning:button name="btnNext" label="NEXT" onclick="{!c.nextPage}" disabled="{!v.disNext}" class="slds-m-around_small slds-col slds-size_1-of-6"/>
+    </div>
+
+    <lightning:accordion allowMultipleSectionsOpen="true">
+        <aura:iteration items="{!v.armors}" var="a">
+            <lightning:accordionSection name="{!a.Name}" label="{!a.Name}">
+                <c:AuraArmorComp armor="{!a}"/>
+            </lightning:accordionSection>
+        </aura:iteration>
+    </lightning:accordion>
 </aura:component>
