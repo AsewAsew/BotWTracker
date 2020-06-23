@@ -9,6 +9,7 @@
                     <c:QuestTabComp/>
                 </lightning:tab>
                 <lightning:tab label="Equipment" id="equipment">
+                    <c:EquipmentTabComp/>
                 </lightning:tab>
                 <lightning:tab label="Items" id="item">
                 </lightning:tab>
