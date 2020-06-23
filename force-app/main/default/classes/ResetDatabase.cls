@@ -5,24 +5,26 @@ public with sharing class ResetDatabase {
         delete [SELECT Id FROM Region__c];
         delete [SELECT Id FROM Item__c];
 
-        ResetArmor();
+        Map<String, Id> armMap = ResetArmor();
         ResetArrows();
         ResetBows();
-        ResetMaterials();
+        Map<String, Id> matMap = ResetMaterials();
         ResetShields();
         ResetRupees();
         ResetWeapons();
 
+        ResetUpgrades(armMap, matMap);
+        
         Map<String, Id> regMap = ResetRegions();
         Map<String, Id> queMap = ResetQuests(regMap);
         ResetShrines(regMap, queMap);
         ResetKoroks(regMap);
     }
 
-    public static void ResetArmor()
+    public static Map<String, Id> ResetArmor()
     {
-        String body = getBody('Armors');
-
+        String body = GetBody('Armors');
+        
         RecordType rt = [SELECT Id FROM RecordType WHERE Name = 'Armor'];
         List<Item__c> armors = new List<Item__c>();
 
@@ -41,17 +43,24 @@ public with sharing class ResetDatabase {
         }
 
         insert armors;
+
+        Map<String, Id> armMap = new Map<String, Id>();
+        for(Item__c a : armors)
+            armMap.put(a.Name, a.Id);
+        
+        return armMap;
     }
 
     public static void ResetArrows()
     {
-        String body = getBody('Arrows');
+        String body = GetBody('Arrows');
 
         RecordType rt = [SELECT Id FROM RecordType WHERE Name = 'Arrow'];
         List<Item__c> arrows = new List<Item__c>();
 
         for(String line : body.split('\n'))
         {
+            if(line.equals('')) continue;
             List<String> parts = SplitString(line, 2);
 
             arrows.add(new Item__c(
@@ -66,13 +75,14 @@ public with sharing class ResetDatabase {
 
     public static void ResetBows()
     {
-        String body = getBody('Bows');
+        String body = GetBody('Bows');
 
         RecordType rt = [SELECT Id FROM RecordType WHERE Name = 'Bow'];
         List<Item__c> bows = new List<Item__c>();
 
         for(String line : body.split('\n'))
         {
+            if(line.equals('')) continue;
             List<String> parts = SplitString(line, 7);
 
             bows.add(new Item__c(
@@ -90,15 +100,16 @@ public with sharing class ResetDatabase {
         insert bows;
     }
 
-    public static void ResetMaterials()
+    public static Map<String, Id> ResetMaterials()
     {
-        String body = getBody('Materials');
+        String body = GetBody('Materials');
 
         RecordType rt = [SELECT Id FROM RecordType WHERE Name = 'Material'];
         List<Item__c> materials = new List<Item__c>();
 
         for(String line : body.split('\n'))
         {
+            if(line.equals('')) continue;
             List<String> parts = SplitString(line, 6);
 
             materials.add(new Item__c(
@@ -113,17 +124,24 @@ public with sharing class ResetDatabase {
         }
 
         insert materials;
+
+        Map<String, Id> matMap = new Map<String, Id>();
+        for(Item__c m : materials)
+            matMap.put(m.Name, m.Id);
+
+        return matMap;
     }
 
     public static void ResetShields()
     {
-        String body = getBody('Shields');
-        // name, archetype, material, base, durability
+        String body = GetBody('Shields');
+
         RecordType rt = [SELECT Id FROM RecordType WHERE Name = 'Shield'];
         List<Item__c> shields = new List<Item__c>();
 
         for(String line : body.split('\n'))
         {
+            if(line.equals('')) continue;
             List<String> parts = SplitString(line, 5);
 
             shields.add(new Item__c(
@@ -141,13 +159,14 @@ public with sharing class ResetDatabase {
 
     public static void ResetRupees()
     {
-        String body = getBody('Rupees');
+        String body = GetBody('Rupees');
 
         RecordType rt = [SELECT Id FROM RecordType WHERE Name = 'Rupee'];
         List<Item__c> rupees = new List<Item__c>();
 
         for(String line : body.split('\n'))
         {
+            if(line.equals('')) continue;
             List<String> parts = SplitString(line, 2);
 
             rupees.add(new Item__c(
@@ -162,13 +181,14 @@ public with sharing class ResetDatabase {
 
     public static void ResetWeapons()
     {
-        String body = getBody('Weapons');
-        //name, archetype, category, material, base, durability
+        String body = GetBody('Weapons');
+
         RecordType rt = [SELECT Id FROM RecordType WHERE Name = 'Weapon'];
         List<Item__c> weapons = new List<Item__c>();
 
         for(String line : body.split('\n'))
         {
+            if(line.equals('')) continue;
             List<String> parts = SplitString(line, 6);
 
             weapons.add(new Item__c(
@@ -185,14 +205,50 @@ public with sharing class ResetDatabase {
         insert weapons;
     }
 
+    public static void ResetUpgrades(Map<String, Id> armMap, Map<String, Id> matMap)
+    {
+        String body = GetBody('Upgrades');
+
+        List<Upgrade__c> upgrades = new List<Upgrade__c>();
+
+        for(String line : body.split('\n'))
+        {
+            List<String> parts = SplitString(line, 7);
+
+            if(matMap.get(parts.get(2)) == null)
+                System.debug(parts.get(0));
+
+            // Item__c, stage__c, mat, mat cnt, add mat, add mat cnt, pwr bst
+            upgrades.add(new Upgrade__c(
+                Name = parts.get(0) + ' ' + parts.get(1),
+                Item__c = armMap.get(parts.get(0)),
+                Stage__c = Integer.valueOf(parts.get(1)),
+                Material__c = matMap.get(parts.get(2)),
+                Material_Count__c = Integer.valueOf(parts.get(3)),
+                Power_Boost__c = Integer.valueOf(parts.get(6))
+            ));
+
+            //System.debug(parts.get(2) + ' ' + matMap.get(parts.get(2)));
+
+            if(!parts.get(4).equals(''))
+            {
+                upgrades.get(upgrades.size()-1).Additional_Material__c = matMap.get(parts.get(4));
+                upgrades.get(upgrades.size()-1).Additional_Material_Count__c = Integer.valueOf(parts.get(5));
+            }
+        }
+
+        insert upgrades;
+    }
+
     public static Map<String, Id> ResetRegions()
     {
-        String body = getBody('Regions');
+        String body = GetBody('Regions');
 
         List<Region__c> regions = new List<Region__c>();
 
         for(String line : body.split('\n'))
         {
+            if(line.equals('')) continue;
             List<String> parts = SplitString(line, 1);
 
             regions.add(new Region__c(Name = parts.get(0)));
@@ -209,12 +265,13 @@ public with sharing class ResetDatabase {
 
     public static Map<String, Id> ResetQuests(Map<String, Id> regMap)
     {
-        String body = getBody('Quests');
+        String body = GetBody('Quests');
 
         List<Quest__c> quests = new List<Quest__c>();
 
         for(String line : body.split('\n'))
         {
+            if(line.equals('')) continue;
             List<String> parts = SplitString(line, 6);
 
             quests.add(new Quest__c(
@@ -238,14 +295,13 @@ public with sharing class ResetDatabase {
 
     public static void ResetShrines(Map<String, Id> regMap, Map<String, Id> queMap)
     {
-
-        String body = getBody('Shrines');
-        // Name, Region, Challenge Name, Type, Strength Level, Subarea, Divine Beast, DLC, Completed
+        String body = GetBody('Shrines');
 
         List<Shrine__c> shrines = new List<Shrine__c>();
         
         for(String line : body.split('\n'))
         {
+            if(line.equals('')) continue;
             List<String> parts = SplitString(line, 10);
 
             shrines.add(new Shrine__c(
@@ -270,13 +326,14 @@ public with sharing class ResetDatabase {
 
     public static void ResetKoroks(Map<String, Id> regMap)
     {
-        String body = getBody('Koroks');
+        String body = GetBody('Koroks');
 
         List<Korok__c> koroks = new List<Korok__c>();
         integer k = 0;
 
         for(String line : body.split('\n'))
         {
+            if(line.equals('')) continue;
             List<String> parts = SplitString(line, 2);
             integer cnt = Integer.valueOf(parts.get(1));
 
@@ -292,12 +349,12 @@ public with sharing class ResetDatabase {
         insert koroks;
     }
 
-    private static String getBody(String input)
+    private static String GetBody(String type)
     {
-        input = 'Input' + input;
-        StaticResource sr = [SELECT body FROM StaticResource WHERE Name =: input];
-        return sr.body.toString();
-    } 
+        String input = 'Input' + type;
+        StaticResource sr = [SELECT Body FROM StaticResource WHERE Name =: input];
+        return sr.Body.toString();
+    }
 
     private static List<String> SplitString(String line, integer cnt)
     {
