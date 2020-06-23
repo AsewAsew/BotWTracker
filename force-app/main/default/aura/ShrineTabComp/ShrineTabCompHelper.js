@@ -19,11 +19,15 @@
         var page = component.get("v.page");
         var perPage = component.get("v.perPage");
         var regionId = component.get("v.regionId");
+        var type = component.get("v.type");
+        var level = component.get("v.level");
 
         action.setParams({
             page: page,
             perPage: perPage,
-            regionId: regionId
+            regionId: regionId,
+            type: type,
+            level: level
         });
 
         action.setCallback(this, function(response) {
@@ -42,9 +46,13 @@
         var action = component.get("c.getShrineCount");
 
         var regionId = component.get("v.regionId");
+        var type = component.get("v.type");
+        var level = component.get("v.level");
 
         action.setParams({
-            regionId: regionId
+            regionId: regionId,
+            type: type,
+            level: level
         });
 
         action.setCallback(this, function(response) {

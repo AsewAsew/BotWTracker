@@ -9,16 +9,42 @@
     <aura:attribute name="disPrev" type="Boolean" default="{!true}"/>
     <aura:attribute name="disNext" type="Boolean" default="{!false}"/>
     <aura:attribute name="regionId" type="Id" default=""/>
-
-    <select label="Region Select" id="regionSelect" onchange="{!c.selectRegion}">
-        <option text="All" value=""/>
-        <aura:iteration items="{!v.regions}" var="reg">
-            <option text="{!reg.Name}" value="{!reg.Id}"/>
-        </aura:iteration>
-    </select>
+    <aura:attribute name="type" type="String" default=""/>
+    <aura:attribute name="level" type="String" default=""/>
 
     <div class="slds-grid slds-grid_align-spread">
         <lightning:button name="btnPrev" label="PREV" onclick="{!c.prevPage}" disabled="{!v.disPrev}" class="slds-m-around_small slds-col slds-size_1-of-6"/>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <p>Region</p>
+            <select label="Region Select" id="regionSelect" onchange="{!c.selectRegion}">
+                <option text="All" value=""/>
+                <aura:iteration items="{!v.regions}" var="reg">
+                    <option text="{!reg.Name}" value="{!reg.Id}"/>
+                </aura:iteration>
+            </select>
+        </div>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <p>Type</p>
+            <select id="typeSelect" onchange="{!c.selectType}">
+                <option text="All" value=""/>
+                <option text="Apparatus" value="Apparatus"/>
+                <option text="Blessing" value="Blessing"/>
+                <option text="Puzzle" value="Puzzle"/>
+                <option text="Strength" value="Strength"/>
+            </select>
+        </div>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <aura:if isTrue="{!v.type == 'Strength'}">
+                <p>Level</p>
+                <select id="levelSelect" onchange="{!c.selectLevel}">
+                    <option text="All" value=""/>
+                    <option text="Teaching" value="Teaching"/>
+                    <option text="Minor" value="Minor"/>
+                    <option text="Modest" value="Modest"/>
+                    <option text="Major" value="Major"/>
+                </select>
+            </aura:if>
+        </div>
         <lightning:button name="btnNext" label="NEXT" onclick="{!c.nextPage}" disabled="{!v.disNext}" class="slds-m-around_small slds-col slds-size_1-of-6"/>
     </div>
 

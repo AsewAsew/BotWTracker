@@ -12,6 +12,20 @@
         helper.shrines(component);
     },
 
+    selectType : function(component, event, helper) {
+        component.set("v.type", event.currentTarget.value);
+
+        helper.resetPage(component);
+        helper.shrines(component);
+    },
+
+    selectLevel : function(component, event, helper) {
+        component.set("v.level", event.currentTarget.value);
+
+        helper.resetPage(component);
+        helper.shrines(component);
+    },
+
     prevPage : function(component, event, helper) {
         component.set("v.page", component.get("v.page") - 1);
         helper.shrines(component);

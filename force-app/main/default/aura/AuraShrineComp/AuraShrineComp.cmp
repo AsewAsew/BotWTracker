@@ -6,12 +6,17 @@
     <aura:attribute name="disCom" type="Boolean"/>
 
     <div class="slds-grid slds-grid_align-spread">
-        <div class="slds-m-around_small slds-col_bump-right slds-size_1-of-6">
-            <p>{!v.shrine.Challenge_Name__c}</p>
-            <p>{!v.shrine.Completed__c}</p>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <p class="slds-text-heading_medium">Names</p>
+            <p>Challege: {!v.shrine.Challenge_Name__c}</p>
             <aura:if isTrue="{!v.shrine.Quest__r.Name}">
-                <p>{!v.shrine.Quest__r.Name}</p>
+                <p>Quest: {!v.shrine.Quest__r.Name}</p>
             </aura:if>
+        </div>
+        <div class="slds-m-around_small slds-col_bump-right slds-size_1-of-6">
+            <p class="slds-text-heading_medium">Location</p>
+            <p>Region: {!v.shrine.Region__r.Name}</p>
+            <p>Subarea: {!v.shrine.Subarea__c}</p>
         </div>
         <div class="slds-col slds-size_1-of-6">
             <lightning:button name="register" label="Register" disabled="{!v.disReg || v.disCom}"
@@ -20,5 +25,14 @@
                     onclick="{!c.comShrine}" class="slds-m-around_small"/>
         </div>
     </div>
+    <aura:if isTrue="{!v.shrine.Shrine_Rewards__r}">
+        <lightning:accordionSection name="rewards" label="Rewards">
+            <div class="slds-grid">
+                <aura:iteration items="{!v.shrine.Shrine_Rewards__r}" var="r">
+                    <c:AuraShrineRewardComp shrineReward="{!r}"/>
+                </aura:iteration>
+            </div>
+        </lightning:accordionSection>
+    </aura:if>
 
 </aura:component>

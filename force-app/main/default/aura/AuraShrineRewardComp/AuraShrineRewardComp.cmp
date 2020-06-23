@@ -1,0 +1,9 @@
+<aura:component controller="BotWTrackerHelper">
+    <aura:attribute name="shrineReward" type="Shrine_Reward__c"/>
+    <aura:attribute name="disReward" type="Boolean" default="{!false}"/>
+    <aura:attribute name="btnClass" type="String" default="slds-col"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <lightning:button name="btnShrineReward" label="{!v.shrineReward.Item__r.Name}" disabled="{!v.disReward}"
+            onclick="{!c.updateShrineReward}" class="{!v.btnClass}"/>
+</aura:component>

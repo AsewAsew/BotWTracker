@@ -11,5 +11,5 @@
     comShrine : function(component, event, helper) {
         var shrine = component.get("v.shrine");
         helper.updateShrine(component, shrine, "Completed");
-    }
+    },
 })
