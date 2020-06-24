@@ -1,6 +1,6 @@
 public with sharing class ResetDatabase {
     
-    public static void ResetAll()
+    public static void HardResetAll()
     {
         delete [SELECT Id FROM Upgrade__c];
         delete [SELECT Id FROM Region__c];
@@ -20,6 +20,28 @@ public with sharing class ResetDatabase {
         Map<String, Id> queMap = ResetQuests(regMap);
         ResetShrines(regMap, queMap);
         ResetKoroks(regMap);
+    }
+
+    public static void ResetAll()
+    {
+        List<Shrine__c> shrines = [SELECT Id, Completed__c FROM Shrine__c WHERE Completed__c != 'Hidden'];
+        for(Shrine__c o : shrines) o.Completed__c = 'Hidden';
+        update shrines;
+        List<Quest__c> quests = [SELECT Id, Completed__c FROM Quest__c WHERE Completed__c = true];
+        for(Quest__c o : quests) o.Completed__c = true;
+        update quests;
+        List<Quest_Stage__C> qStages = [SELECT Id, Completed__c FROM Quest_Stage__C WHERE Completed__c = true];
+        for(Quest_Stage__C o : qStages) o.Completed__c = true;
+        update qStages;
+        List<Shrine_Reward__c> sRewards = [SELECT Id, Obtained__c FROM Shrine_Reward__c WHERE Obtained__c = true];
+        for(Shrine_Reward__c o : sRewards) o.Obtained__c = true;
+        update sRewards;
+        List<Upgrade__c> upgrades = [SELECT Id, Obtained__c FROM Upgrade__c WHERE Obtained__c = true];
+        for(Upgrade__c o : upgrades) o.Obtained__c = true;
+        update upgrades;
+        List<Korok__c> koroks = [SELECT Id, Obtained__c FROM Korok__c WHERE Obtained__c = true];
+        for(Korok__c o : koroks) o.Obtained__c = true;
+        update koroks;
     }
 
     public static Map<String, Id> ResetArmor()
@@ -66,7 +88,7 @@ public with sharing class ResetDatabase {
 
             arrows.add(new Item__c(
                 Name = parts.get(0),
-                Base_Power__c = Integer.valueOf(parts.get(1)),
+                Effect__c = parts.get(1),
                 RecordTypeId = rt.Id
             ));
         }

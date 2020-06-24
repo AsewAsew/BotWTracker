@@ -1,3 +1,54 @@
-<aura:component>
-    <p>bows</p>
+<aura:component controller="BotWTrackerHelper">
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <aura:attribute name="bows" type="List" default="[]"/>
+    <aura:attribute name="bowArchs" type="String[]" default="[]"/>
+    <aura:attribute name="bowCount" type="Integer"/>
+    <aura:attribute name="page" type="Integer" default="1"/>
+    <aura:attribute name="perPage" type="Integer" default="15"/>
+    <aura:attribute name="disPrev" type="Boolean" default="{!true}"/>
+    <aura:attribute name="disNext" type="Boolean" default="{!false}"/>
+    <aura:attribute name="archetype" type="String" default=""/>
+    <aura:attribute name="material" type="String" default=""/>
+    <aura:attribute name="effect" type="String" default=""/>
+
+    <div class="slds-grid slds-grid_align-spread">
+        <lightning:button name="btnPrev" label="PREV" onclick="{!c.prevPage}" disabled="{!v.disPrev}" class="slds-m-around_small slds-col slds-size_1-of-6"/>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <p>Archetype</p>
+            <select label="Type" id="regionSelect" onchange="{!c.selectType}">
+                <option text="All" value=""/>
+                <aura:iteration items="{!v.bowArchs}" var="a">
+                    <option text="{!a}" value="{!a}"/>
+                </aura:iteration>
+            </select>
+        </div>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <p>Material</p>
+            <select id="materialSelect" onchange="{!c.selectMaterial}">
+                <option text="All" value=""/>
+                <option text="Wood" value="Wood"/>
+                <option text="Metal" value="Metal"/>
+                <option text="Ancient" value="Ancient"/>
+                <option text="Other" value="Other"/>
+            </select>
+        </div>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <p>Effect</p>
+            <select id="effectSelect" onchange="{!c.selectEffect}">
+                <option text="All" value=""/>
+                <option text="None" value="None"/>
+                <option text="Multi-Shot" value="Multi-Shot"/>
+            </select>
+        </div>
+        <lightning:button name="btnNext" label="NEXT" onclick="{!c.nextPage}" disabled="{!v.disNext}" class="slds-m-around_small slds-col slds-size_1-of-6"/>
+    </div>
+
+    <lightning:accordion allowMultipleSectionsOpen="true">
+        <aura:iteration items="{!v.bows}" var="b">
+            <lightning:accordionSection name="{!b.Name}" label="{!b.Name}">
+                <c:AuraBowComp bow="{!b}"/>
+            </lightning:accordionSection>
+        </aura:iteration>
+    </lightning:accordion>
 </aura:component>

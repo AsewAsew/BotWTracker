@@ -108,4 +108,51 @@ public class BotWTrackerHelper {
 
         return Database.countQuery(query);
     }
+
+    @AuraEnabled(Cacheable=true)
+    public static List<Item__c> getArrows()
+    {
+        return [SELECT Id, Name, Effect__c FROM Item__c WHERE RecordType.Name = 'Arrow'];
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static List<String> getBowArch()
+    {
+        return new List<String>{
+            'None', 'Ancient Soldier Gear', 'Bokoblin Gear', 'Gerudo Gear',
+            'Knight\'s Gear', 'Korok Gear', 'Lizalfos Gear', 'Lynel Gear',
+            'Rito Gear', 'Royal Gear', 'Royal Guard\'s Series', 'Sheikah Gear',
+            'Soldier\'s Gear', 'Traveler\'s Gear', 'Yiga Clan Gear', 'Zora Gear'
+        };
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static List<Item__c> getBows(Integer page, Integer perPage, String archetype, String material, String effect)
+    {
+        integer pageOffset = (page - 1) * perPage;
+        String query = 'SELECT Id, Name, Archetype__c, Material__c, Effect__c, Base_Power__c, Durability__c, Range__c FROM Item__c WHERE RecordType.Name = \'Bow\'';
+        if(archetype != '')
+            query += ' AND Archetype__c =: archetype';
+        if(material != '')
+            query += ' AND Material__c =: material';
+        if(effect != '')
+            query += ' AND Effect__c ' + (effect == 'None' ? ' = ' : ' != ') + '\'\'';
+        query += ' LIMIT :perPage OFFSET :pageOffset';
+
+        return Database.query(query);
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static Integer getBowCount(String archetype, String material, String effect)
+    {
+        String query = 'SELECT COUNT() FROM Item__c WHERE RecordType.Name = \'Bow\'';
+        if(archetype != '')
+            query += ' AND Archetype__c =: archetype';
+        if(material != '')
+            query += ' AND Material__c =: material';
+        if(effect != '')
+            query += ' AND Effect__c ' + (effect == 'None' ? ' = ' : ' != ') + '\'\'';
+
+        return Database.countQuery(query);
+    }
 }

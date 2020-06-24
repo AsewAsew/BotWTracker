@@ -1,3 +1,13 @@
-<aura:component>
-    <p>arrows</p>
+<aura:component controller="BotWTrackerHelper">
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <aura:attribute name="arrows" type="List" default="[]"/>
+
+    <lightning:accordion allowMultipleSectionsOpen="true">
+        <aura:iteration items="{!v.arrows}" var="a">
+            <lightning:accordionSection name="{!a.Name}" label="{!a.Name}">
+                <p>Effect: {!a.Effect__c}</p>
+            </lightning:accordionSection>
+        </aura:iteration>
+    </lightning:accordion>
 </aura:component>
