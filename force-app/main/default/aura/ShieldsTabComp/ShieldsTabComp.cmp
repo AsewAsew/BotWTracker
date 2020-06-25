@@ -1,3 +1,44 @@
-<aura:component>
-    <p>shields</p>
+<aura:component controller="BotWTrackerHelper">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:attribute name="shields" type="List" default="[]"/>
+    <aura:attribute name="shiArchs" type="String[]" default="[]"/>
+    <aura:attribute name="shieldCount" type="Integer" default="0"/>
+    <aura:attribute name="page" type="Integer" default="1"/>
+    <aura:attribute name="perPage" type="Integer" default="15"/>
+    <aura:attribute name="archetype" type="String" default=""/>
+    <aura:attribute name="material" type="String" default=""/>
+    <aura:attribute name="disPrev" type="Boolean" default="{!true}"/>
+    <aura:attribute name="disNext" type="Boolean" default="{!false}"/>
+
+    <div class="slds-grid slds-grid_align-spread">
+        <lightning:button name="btnPrev" label="PREV" onclick="{!c.prevPage}" disabled="{!v.disPrev}" class="slds-m-around_small slds-col slds-size_1-of-6"/>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <p>Type</p>
+            <select label="Type Select" id="typeSelect" onchange="{!c.selectType}">
+                <option text="All" value=""/>
+                <aura:iteration items="{!v.shiArchs}" var="a">
+                    <option text="{!a}" value="{!a}"/>
+                </aura:iteration>
+            </select>
+        </div>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <p>Material</p>
+            <select id="materialSelect" onchange="{!c.selectMaterial}">
+                <option text="All" value=""/>
+                <option text="Wood" value="Wood"/>
+                <option text="Metal" value="Metal"/>
+                <option text="Ancient" value="Ancient"/>
+            </select>
+        </div>
+        <lightning:button name="btnNext" label="NEXT" onclick="{!c.nextPage}" disabled="{!v.disNext}" class="slds-m-around_small slds-col slds-size_1-of-6"/>
+    </div>
+
+    <lightning:accordion allowMultipleSectionsOpen="true">
+        <aura:iteration items="{!v.shields}" var="s">
+            <lightning:accordionSection name="{!s.Name}" label="{!s.Name}">
+                <c:AuraShieldComp shield="{!s}"/>
+            </lightning:accordionSection>
+        </aura:iteration>
+    </lightning:accordion>
 </aura:component>	

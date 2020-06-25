@@ -155,4 +155,41 @@ public class BotWTrackerHelper {
 
         return Database.countQuery(query);
     }
+
+    @AuraEnabled(Cacheable=true)
+    public static List<String> getShiArchs()
+    {
+        return new List<String>{
+            'None', 'Ancient Soldier Gear', 'Bokoblin Gear', 'Gerudo Gear', 'Goron Gear',
+            'Guardian Gear', 'Knight\'s Gear', 'Korok Gear', 'Lizalfos Gear', 'Lynel Gear',
+            'Moblin Gear', 'Rito Gear', 'Royal Gear', 'Royal Guard\'s Series', 'Rusty Gear',
+            'Sheikah Gear', 'Soldier\'s Gear', 'Traveler\'s Gear', 'Zora Gear'
+        };
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static List<Item__c> getShields(Integer page, Integer perPage, String archetype, String material)
+    {
+        Integer pageOffset = (page - 1) * perPage;
+        String query = 'SELECT Id, Name, Archetype__c, Material__c, Base_Power__c, Durability__c FROM Item__c WHERE RecordType.Name = \'Shield\'';
+        if(archetype != '')
+            query += ' AND Archetype__c =: archetype';
+        if(material != '')
+            query += ' AND Material__c =: material';
+        query += ' LIMIT :perPage OFFSET :pageOffset';
+
+        return Database.query(query);
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static Integer getShieldCount(String archetype, String material)
+    {
+        String query = 'SELECT COUNT() FROM Item__c WHERE RecordType.Name = \'Shield\'';
+        if(archetype != '')
+            query += ' AND Archetype__c =: archetype';
+        if(material != '')
+            query += ' AND Material__c =: material';
+
+        return Database.countQuery(query);
+    }
 }
