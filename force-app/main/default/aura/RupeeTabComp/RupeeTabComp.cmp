@@ -1,0 +1,13 @@
+<aura:component controller="BotWTrackerHelper">
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <aura:attribute name="rupees" type="List" default="[]"/>
+
+    <lightning:accordion allowMultipleSectionsOpen="true">
+        <aura:iteration items="{!v.rupees}" var="r">
+            <lightning:accordionSection name="{!r.Name}" label="{!r.Name}">
+                <p>Value: {!r.Base_Power__c} Rupees</p>
+            </lightning:accordionSection>
+        </aura:iteration>
+    </lightning:accordion>
+</aura:component>	

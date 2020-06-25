@@ -1,5 +1,0 @@
-<aura:component>
-    <aura:attribute name="rupee" type="Item__c"/>
-
-    <p>{!v.rupee.Name}</p>
-</aura:component>	
