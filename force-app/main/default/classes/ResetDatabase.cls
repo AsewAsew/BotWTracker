@@ -13,6 +13,7 @@ public with sharing class ResetDatabase {
         ResetShields();
         ResetRupees();
         ResetWeapons();
+        ResetKeyItems();
 
         ResetUpgrades(armMap, matMap);
         
@@ -226,6 +227,29 @@ public with sharing class ResetDatabase {
         }
 
         insert weapons;
+    }
+
+    public static void ResetKeyItems()
+    {
+        String body = GetBody('KeyItems');
+
+        RecordType rt = [SELECT Id FROM RecordType WHERE Name = 'KeyItem'];
+
+        List<Item__c> keyItems = new List<Item__c>();
+
+        for(String line : body.split('\n'))
+        {
+            List<String> parts = SplitString(line, 3);
+
+            keyItems.add(new Item__c(
+                Name = parts.get(0),
+                Archetype__c = parts.get(1),
+                Effect__c = parts.get(2),
+                RecordTypeId = rt.Id
+            ));
+        }
+
+        insert keyItems;
     }
 
     public static void ResetUpgrades(Map<String, Id> armMap, Map<String, Id> matMap)

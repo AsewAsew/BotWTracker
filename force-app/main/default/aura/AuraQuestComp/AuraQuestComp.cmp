@@ -1,0 +1,5 @@
+<aura:component>
+    <aura:attribute name="quest" type="Quest__c"/>
+
+    <p>{!v.quest.Name}</p>
+</aura:component>	

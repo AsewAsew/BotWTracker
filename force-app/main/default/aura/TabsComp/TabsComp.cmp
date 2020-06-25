@@ -12,8 +12,10 @@
                     <c:EquipmentTabComp/>
                 </lightning:tab>
                 <lightning:tab label="Items" id="item">
+                    <c:ItemTabComp/>
                 </lightning:tab>
                 <lightning:tab label="Koroks" id="korok">
+                    <c:KorokTabComp/>
                 </lightning:tab>
             </lightning:tabset>
         </div>

@@ -1,0 +1,9 @@
+<aura:component>
+    <lightning:tabset>
+        <lightning:tab label="Materials" id="material">
+            <c:MaterialTabComp/>
+        </lightning:tab>
+        <lightning:tab label="Rupees" id="rupee"></lightning:tab>
+        <lightning:tab label="Key Items" id="key"></lightning:tab>
+    </lightning:tabset>
+</aura:component>	

@@ -1,0 +1,77 @@
+<aura:component controller="BotWTrackerHelper">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:attribute name="materials" type="List" default="[]"/>
+    <aura:attribute name="categories" type="String[]" default="[]"/>
+    <aura:attribute name="subcats" type="String[]" default="[]"/>
+    <aura:attribute name="effects" type="String[]" default="[]"/>
+    <aura:attribute name="archetype" type="String" default=""/>
+    <aura:attribute name="category" type="String" default=""/>
+    <aura:attribute name="subcat" type="String" default=""/>
+    <aura:attribute name="effect" type="String" default=""/>
+    <aura:attribute name="page" type="Integer" default="1"/>
+    <aura:attribute name="perPage" type="Integer" default="15"/>
+    <aura:attribute name="disPrev" type="Boolean" default="{!true}"/>
+    <aura:attribute name="disNext" type="Boolean" default="{!false}"/>
+    
+    <p>{!v.categories}</p>
+    <p>{!v.subcats}</p>
+
+    <div class="slds-grid slds-grid_align-spread">
+        <lightning:button name="btnPrev" label="PREV" onclick="{!c.prevPage}" disabled="{!v.disPrev}" class="slds-m-around_small slds-col slds-size_1-of-6"/>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <p>Effect</p>
+            <select id="effectSelect" onchange="{!c.selectEffect}">
+                <option text="All" value=""/>
+                <aura:iteration items="{!v.effects}" var="e">
+                    <option text="{!e}" value="{!e}"/>
+                </aura:iteration>
+            </select>
+        </div>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <p>Type</p>
+            <select id="typeSelect" onchange="{!c.selectType}">
+                <option text="All" value=""/>
+                <option text="None" value="None"/>
+                <option text="Critter" value="Critter"/>
+                <option text="Ingredient" value="Ingredient"/>
+                <option text="Monster Part" value="Monster Part"/>
+            </select>
+        </div>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <div class="slds-grid">
+                <aura:if isTrue="{!v.archetype == 'Ingredient'}">
+                    <div class="slds-col">
+                        <p>Category</p>
+                        <select label="Category Select" id="categorySelect" onchange="{!c.selectCategory}">
+                            <option text="All" value=""/>
+                            <aura:iteration items="{!v.categories}" var="c">
+                                <option text="{!c}" value="{!c}"/>
+                            </aura:iteration>
+                        </select>
+                    </div>
+                    <div class="slds-col">
+                        <aura:if isTrue="{!v.category == 'Meat' || v.category == 'Seafood'}">
+                            <p>Subcategory</p>
+                            <select label="Subcategory Select" id="subcategorySelect" onchange="{!c.selectSubCat}">
+                                <option text="All" value=""/>
+                                <aura:iteration items="{!v.subcats}" var="s">
+                                    <option text="{!s}" value="{!s}"/>
+                                </aura:iteration>
+                            </select>
+                        </aura:if>
+                    </div>
+                </aura:if>
+            </div>
+        </div>
+        <lightning:button name="btnNext" label="NEXT" onclick="{!c.nextPage}" disabled="{!v.disNext}" class="slds-m-around_small slds-col slds-size_1-of-6"/>
+    </div>
+
+    <lightning:accordion allowMultipleSectionsOpen="true">
+        <aura:iteration items="{!v.materials}" var="m">
+            <lightning:accordionSection name="{!m.Name}" label="{!m.Name}">
+                <c:AuraMaterialComp material="{!m}"/>
+            </lightning:accordionSection>
+        </aura:iteration>
+    </lightning:accordion>
+</aura:component>	

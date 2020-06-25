@@ -1,0 +1,5 @@
+<aura:component>
+    <aura:attribute name="material" type="Item__c"/>
+
+    <p>{!v.material.Name}</p>
+</aura:component>	

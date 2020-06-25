@@ -192,4 +192,149 @@ public class BotWTrackerHelper {
 
         return Database.countQuery(query);
     }
+
+    @AuraEnabled(Cacheable=true)
+    public static List<String> getWeaArchs()
+    {
+        return new List<String>{
+            'None', 'Ancient Soldier Gear', 'Bokoblin Gear', 'Boomerang', 'Daily Use Goods', 'Gerudo Gear',
+            'Goron Gear', 'Guardian Gear', 'Hammer', 'Knight\'s Gear', 'Korok Gear', 'Lizalfos Gear',
+            'Lynel Gear', 'Magic Gear', 'Rito Gear', 'Royal Gear', 'Royal Guard\'s Series', 'Rusty Gear',
+            'Sheikah Gear', 'Soldier\'s Gear', 'Traveler\'s Gear', 'Yiga Clan Gear', 'Zora Gear'
+        };
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static List<Item__c> getWeapons(Integer page, Integer perPage, String archetype, String category, String material)
+    {
+        integer pageOffset = (page - 1) * perPage;
+        String query = 'SELECT Id, Name, Archetype__c, Material__c, Base_Power__c, Durability__c, Category__c FROM Item__c WHERE RecordType.Name = \'Weapon\'';
+        if(archetype != '')
+            query += ' AND Archetype__c =: archetype';
+        if(category != '')
+            query += ' AND Category__c =: category';
+        if(material != '')
+            query += ' AND Material__c =: material';
+        query += ' LIMIT :perPage OFFSET :pageOffset';
+
+        return Database.query(query);
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static Integer getWeaponCount(String archetype, String category, String material)
+    {
+        String query = 'SELECT COUNT() FROM Item__c WHERE RecordType.Name = \'Weapon\'';
+        if(archetype != '')
+            query += ' AND Archetype__c =: archetype';
+        if(category != '')
+            query += ' AND Category__c =: category';
+        if(material != '')
+            query += ' AND Material__c =: material';
+
+        return Database.countQuery(query);
+    }
+
+    @AuraEnabled
+    public static List<Quest__c> getQuests(Integer page, Integer perPage, String regionId, String type)
+    {
+        integer pageOffset = (page - 1) * perPage;
+        String query = 'SELECT Id, Name, Type__c, Region__c, Location__c, Giver__c, Completed__c FROM Quest__c';
+        if(regionId != '' || type != '')
+        {
+            query += ' WHERE';
+            if(regionId != '')
+            {
+                query += ' Region__c =: regionId';
+                if(type != '')
+                    query += ' AND';
+            }
+            if(type != '')
+                query += ' Type__c =: type';
+        }
+        query += ' LIMIT :perPage OFFSET :pageOffset';
+
+        return Database.query(query);
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static Integer getQuestCount(String regionId, String type)
+    {
+        String query = 'SELECT COUNT() FROM Quest__c';
+        if(regionId != '' || type != '')
+        {
+            query += ' WHERE';
+            if(regionId != '')
+            {
+                query += ' Region__c =: regionId';
+                if(type != '')
+                    query += ' AND';
+            }
+            if(type != '')
+                query += ' Type__c =: type';
+        }
+
+        return Database.countQuery(query);
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static List<String> getMatCats(String archetype)
+    {
+        if(archetype != 'Ingredient') return new List<String>();
+        return new List<String>{
+            'Flower and Herb', 'Fruit', 'Meat',
+            'Misc', 'Mushroom', 'Seafood', 'Vegetable'
+        };
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static List<String> getSubCats(String archetype, String category)
+    {
+        if(category == 'Meat') return new List<String>{'Poultry', 'Red Meat'};
+        if(category == 'Seafood') return new List<String>{'Crab', 'Fish and Snail'};
+        return new List<String>();
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static List<String> getEffects()
+    {
+        return new List<String>{
+            'Chilly', 'Electro', 'Enduring',
+            'Energizing', 'Fireproof', 'Hasty', 'Hearty',
+            'Mighty', 'Sneaky', 'Spicy', 'Tough'
+        };
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static List<Item__c> getMaterials(Integer page, Integer perPage, String archetype, String category, String setBonus, String effect)
+    {
+        Integer pageOffset = (page - 1) * perPage;
+        String query = 'SELECT Id, Name, Base_Power__c, Effect__c, Archetype__c, Category__c, Set_Bonus__c FROM Item__c WHERE RecordType.Name = \'Material\'';
+        if(archetype != '')
+            query += ' AND Archetype__c =: archetype';
+        if(category != '')
+            query += ' AND Category__c =: category';
+        if(setBonus != '')
+            query += ' AND Set_Bonus__c =: setBonus';
+        if(effect != '')
+            query += ' AND Effect__c =: effect';
+        query += ' Limit :perPage OFFSET :pageOffset';
+
+        return Database.query(query);
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static Integer getMaterialCount(String archetype, String category, String setBonus, String effect)
+    {
+        String query = 'SELECT COUNT() FROM Item__c WHERE RecordType.Name = \'Material\'';
+        if(archetype != '')
+            query += ' AND Archetype__c =: archetype';
+        if(category != '')
+            query += ' AND Category__c =: category';
+        if(setBonus != '')
+            query += ' AND Set_Bonus__c =: setBonus';
+        if(effect != '')
+            query += ' AND Effect__c =: effect';
+
+        return Database.countQuery(query);
+    }
 }

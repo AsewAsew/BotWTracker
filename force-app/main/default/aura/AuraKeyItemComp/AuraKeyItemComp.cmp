@@ -1,0 +1,5 @@
+<aura:component>
+    <aura:attribute name="keyItem" type="Item__c"/>
+
+    <p>{!v.keyItem.Name}</p>
+</aura:component>	

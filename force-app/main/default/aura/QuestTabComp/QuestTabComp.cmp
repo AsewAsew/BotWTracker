@@ -1,3 +1,45 @@
-<aura:component>
+<aura:component controller="BotWTrackerHelper">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
+    <aura:attribute name="quests" type="List" default="[]"/>
+    <aura:attribute name="regions" type="List" default="[]"/>
+    <aura:attribute name="types" type="List" default="[]"/>
+    <aura:attribute name="disPrev" type="Boolean" default="true"/>
+    <aura:attribute name="disNext" type="Boolean" default="false"/>
+    <aura:attribute name="regionId" type="Id" default=""/>
+    <aura:attribute name="type" type="String" default=""/>
+    <aura:attribute name="page" type="Integer" default="1"/>
+    <aura:attribute name="perPage" type="Integer" default="15"/>
+    <aura:attribute name="questCount" type="Integer" default="0"/>
+
+    <div class="slds-grid slds-grid_align-spread">
+        <lightning:button name="btnPrev" label="PREV" onclick="{!c.prevPage}" disabled="{!v.disPrev}" class="slds-m-around_small slds-col slds-size_1-of-6"/>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <p>Region</p>
+            <select label="Region Select" id="regionSelect" onchange="{!c.selectRegion}">
+                <option text="All" value=""/>
+                <aura:iteration items="{!v.regions}" var="reg">
+                    <option text="{!reg.Name}" value="{!reg.Id}"/>
+                </aura:iteration>
+            </select>
+        </div>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <p>Type</p>
+            <select id="typeSelect" onchange="{!c.selectType}">
+                <option text="All" value=""/>
+                <option text="Main" value="Main"/>
+                <option text="Shrine" value="Shrine"/>
+                <option text="Side" value="Side"/>
+            </select>
+        </div>
+        <lightning:button name="btnNext" label="NEXT" onclick="{!c.nextPage}" disabled="{!v.disNext}" class="slds-m-around_small slds-col slds-size_1-of-6"/>
+    </div>
+
+    <lightning:accordion allowMultipleSectionsOpen="true">
+        <aura:iteration items="{!v.quests}" var="q">
+            <lightning:accordionSection name="{!q.Name}" label="{!q.Name}">
+                <c:AuraQuestComp quest="{!q}"/>
+            </lightning:accordionSection>
+        </aura:iteration>
+    </lightning:accordion>
 </aura:component>

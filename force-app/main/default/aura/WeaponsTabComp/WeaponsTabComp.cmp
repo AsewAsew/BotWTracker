@@ -1,3 +1,55 @@
-<aura:component>
-    <p>weapons</p>
+<aura:component controller="BotWTrackerHelper">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:attribute name="weapons" type="List" default="[]"/>
+    <aura:attribute name="weaArchs" type="String[]" default="[]"/>
+    <aura:attribute name="weaponCount" type="Integer" default="0"/>
+    <aura:attribute name="page" type="Integer" default="1"/>
+    <aura:attribute name="perPage" type="Integer" default="15"/>
+    <aura:attribute name="disPrev" type="Boolean" default="true"/>
+    <aura:attribute name="disNext" type="Boolean" default="false"/>
+    <aura:attribute name="archetype" type="String" default=""/>
+    <aura:attribute name="category" type="String" default=""/>
+    <aura:attribute name="material" type="String" default=""/>
+
+    <div class="slds-grid slds-grid_align-spread">
+        <lightning:button name="btnPrev" label="PREV" onclick="{!c.prevPage}" disabled="{!v.disPrev}" class="slds-m-around_small slds-col slds-size_1-of-6"/>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <p>Type</p>
+            <select label="Type Select" id="typeSelect" onchange="{!c.selectType}">
+                <option text="All" value=""/>
+                <aura:iteration items="{!v.weaArchs}" var="a">
+                    <option text="{!a}" value="{!a}"/>
+                </aura:iteration>
+            </select>
+        </div>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <p>Category</p>
+            <select id="categorySelect" onchange="{!c.selectCategory}">
+                <option text="All" value=""/>
+                <option text="One-handed Weapon" value="One-handed Weapon"/>
+                <option text="Two-handed Weapon" value="Two-handed Weapon"/>
+                <option text="Polearm" value="Polearm"/>
+            </select>
+        </div>
+        <div class="slds-m-around_small slds-col slds-size_1-of-6">
+            <p>Material</p>
+            <select id="materialSelect" onchange="{!c.selectMaterial}">
+                <option text="All" value=""/>
+                <option text="Wood" value="Wood"/>
+                <option text="Metal" value="Metal"/>
+                <option text="Ancient" value="Ancient"/>
+                <option text="Other" value="Other"/>
+            </select>
+        </div>
+        <lightning:button name="btnNext" label="NEXT" onclick="{!c.nextPage}" disabled="{!v.disNext}" class="slds-m-around_small slds-col slds-size_1-of-6"/>
+    </div>
+
+    <lightning:accordion allowMultipleSectionsOpen="true">
+        <aura:iteration items="{!v.weapons}" var="w">
+            <lightning:accordionSection name="{!w.Name}" label="{!w.Name}">
+                <c:AuraWeaponComp weapon="{!w}"/>
+            </lightning:accordionSection>
+        </aura:iteration>
+    </lightning:accordion>
 </aura:component>
