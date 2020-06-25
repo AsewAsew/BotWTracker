@@ -1,3 +1,13 @@
-<aura:component>
-    <p>KOROK TRACKER WILL GO HERE!</p>
+<aura:component controller="BotWTrackerHelper">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:attribute name="regions" type="List" default="[]"/>
+
+    <lightning:accordion allowMultipleSectionsOpen="true">
+        <aura:iteration items="{!v.regions}" var="r">
+            <lightning:accordionSection name="{!r.Name}" label="{!r.Name}">
+                <c:AuraKorokComp region="{!r}"/>
+            </lightning:accordionSection>
+        </aura:iteration>
+    </lightning:accordion>
 </aura:component>	

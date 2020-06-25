@@ -1,0 +1,5 @@
+<aura:component>
+    <aura:attribute name="region" type="Region__c"/>
+
+    <p>{!v.region.Korok_Ratio__c}</p>
+</aura:component>	

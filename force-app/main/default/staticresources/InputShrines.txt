@@ -79,7 +79,7 @@
 "Rona Kachta" "Woodland" "Rona Kachta's Blessing" "Blessing" "" "Hidden Temple" "false" "false" "Hidden" ""
 "Rota Ooh" "Central Hyrule" "Passing of the Gates" "Puzzle" "" "Outskirt Stable" "false" "false" "Hidden" ""
 "Rucco Maag" "Lanayru" "Five Flames" "Puzzle" "" "Samasa Plain" "false" "false" "Hidden" ""
-"Saas Ko'sah" "Central Hyrule" "A Major Test of Strength" "Strength" "Major" "Hyrule Castle" "false" "false" "Hidden" ""
+"Saas Ko'sah" "Hyrule Castle" "A Major Test of Strength" "Strength" "Major" "Hyrule Castle" "false" "false" "Hidden" ""
 "Sah Dahaj" "Eldin" "Power of Fire" "Puzzle" "" "Cephia Lake" "false" "false" "Hidden" ""
 "Sasa Kai" "Gerudo Highlands" "A Moderate Test of Strength" "Strength" "Modest" "Birida Lookout" "false" "false" "Hidden" "Sign of the Shadow"
 "Sha Gehma" "Hebra" "Shift and Lock" "Puzzle" "" "North Tabantha Snowfield" "false" "false" "Hidden" ""

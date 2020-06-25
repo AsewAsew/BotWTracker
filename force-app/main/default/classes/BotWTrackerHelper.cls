@@ -60,7 +60,7 @@ public class BotWTrackerHelper {
     @AuraEnabled(Cacheable=true)
     public static List<Region__c> getRegions()
     {
-        return [SELECT Id, Name FROM Region__c ORDER BY Name ASC];
+        return [SELECT Id, Name, Koroks__c, Found_Koroks__c, Korok_Ratio__c FROM Region__c ORDER BY Name ASC];
     }
     
     @AuraEnabled
@@ -336,5 +336,41 @@ public class BotWTrackerHelper {
             query += ' AND Effect__c =: effect';
 
         return Database.countQuery(query);
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static List<Item__c> getRupees()
+    {
+        return [SELECT Id, Name, Base_Power__c FROM Item__c WHERE RecordType.Name = 'Rupee'];
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static List<Item__c> getKeyItems(Integer page, Integer perPage, String archetype)
+    {
+        integer pageOffset = (page - 1) * perPage;
+        String query = 'SELECT Id, Name, Archetype__c FROM Item__c WHERE RecordType.Name = \'KeyItem\'';
+        if(archetype != '')
+            query += ' AND Archetype__c =: archetype';
+        query += ' LIMIT :perPage OFFSET :pageOffset';
+
+        return Database.query(query);
+    }
+
+    @AuraEnabled(Cacheable=true)
+    public static Integer getKeyItemCount(String archetype)
+    {
+        String query = 'SELECT COUNT() FROM Item__c WHERE RecordType.Name = \'KeyItem\'';
+        if(archetype != '')
+            query += ' AND Archetype__c =: archetype';
+
+        return Database.countQuery(query);
+    }
+
+    @AuraEnabled
+    public static Region__c updateKoroks(Region__c r)
+    {
+        r.Found_Koroks__c++;
+        update r;
+        return r;
     }
 }

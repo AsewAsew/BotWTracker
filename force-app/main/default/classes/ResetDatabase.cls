@@ -40,9 +40,9 @@ public with sharing class ResetDatabase {
         List<Upgrade__c> upgrades = [SELECT Id, Obtained__c FROM Upgrade__c WHERE Obtained__c = true];
         for(Upgrade__c o : upgrades) o.Obtained__c = true;
         update upgrades;
-        List<Korok__c> koroks = [SELECT Id, Obtained__c FROM Korok__c WHERE Obtained__c = true];
-        for(Korok__c o : koroks) o.Obtained__c = true;
-        update koroks;
+        List<Region__c> regions = [SELECT Id, Found_Koroks__c FROM Region__c WHERE Found_Koroks__c != 0];
+        for(Region__c r : regions) r.Found_Koroks__c = 0;
+        update regions;
     }
 
     public static Map<String, Id> ResetArmor()
@@ -122,6 +122,29 @@ public with sharing class ResetDatabase {
         }
 
         insert bows;
+    }
+
+    public static void ResetKeyItems()
+    {
+        String body = GetBody('KeyItems');
+
+        RecordType rt = [SELECT Id FROM RecordType WHERE Name = 'KeyItem'];
+
+        List<Item__c> keyItems = new List<Item__c>();
+
+        for(String line : body.split('\n'))
+        {
+            List<String> parts = SplitString(line, 3);
+
+            keyItems.add(new Item__c(
+                Name = parts.get(0),
+                Archetype__c = parts.get(1),
+                Effect__c = parts.get(2),
+                RecordTypeId = rt.Id
+            ));
+        }
+
+        insert keyItems;
     }
 
     public static Map<String, Id> ResetMaterials()
@@ -229,29 +252,6 @@ public with sharing class ResetDatabase {
         insert weapons;
     }
 
-    public static void ResetKeyItems()
-    {
-        String body = GetBody('KeyItems');
-
-        RecordType rt = [SELECT Id FROM RecordType WHERE Name = 'KeyItem'];
-
-        List<Item__c> keyItems = new List<Item__c>();
-
-        for(String line : body.split('\n'))
-        {
-            List<String> parts = SplitString(line, 3);
-
-            keyItems.add(new Item__c(
-                Name = parts.get(0),
-                Archetype__c = parts.get(1),
-                Effect__c = parts.get(2),
-                RecordTypeId = rt.Id
-            ));
-        }
-
-        insert keyItems;
-    }
-
     public static void ResetUpgrades(Map<String, Id> armMap, Map<String, Id> matMap)
     {
         String body = GetBody('Upgrades');
@@ -296,9 +296,12 @@ public with sharing class ResetDatabase {
         for(String line : body.split('\n'))
         {
             if(line.equals('')) continue;
-            List<String> parts = SplitString(line, 1);
+            List<String> parts = SplitString(line, 2);
 
-            regions.add(new Region__c(Name = parts.get(0)));
+            regions.add(new Region__c(
+                Name = parts.get(0),
+                Koroks__c = Integer.valueOf(parts.get(1))
+            ));
         }
 
         insert regions;
