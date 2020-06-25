@@ -10,6 +10,10 @@ declare module "@salesforce/resourceUrl/InputBows" {
     var InputBows: string;
     export default InputBows;
 }
+declare module "@salesforce/resourceUrl/InputKeyItems" {
+    var InputKeyItems: string;
+    export default InputKeyItems;
+}
 declare module "@salesforce/resourceUrl/InputKoroks" {
     var InputKoroks: string;
     export default InputKoroks;

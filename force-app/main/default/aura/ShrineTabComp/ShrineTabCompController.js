@@ -15,6 +15,9 @@
     selectType : function(component, event, helper) {
         component.set("v.type", event.currentTarget.value);
 
+        if(component.get("v.type") != 'Strength')
+            component.set("v.level", "");
+
         helper.resetPage(component);
         helper.shrines(component);
     },
